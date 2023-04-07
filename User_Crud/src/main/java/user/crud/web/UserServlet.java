@@ -2,6 +2,7 @@ package user.crud.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -75,9 +76,23 @@ public class UserServlet extends HttpServlet {
 				}
 				break;
 			default:
+				// defaultResponse
+				try {
+					listOfUsers(request,response);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			}
 			
+	}
+	private void listOfUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	,SQLException{
+		List<User> users =userDAO.selectAllUsers();
+		request.setAttribute("listOfUsers", users);
+		request.getRequestDispatcher("listOfUsers.jsp").forward(request, response);
+		
 	}
 	private void showForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("userForm.jsp").forward(request, response);
@@ -96,13 +111,13 @@ public class UserServlet extends HttpServlet {
 		String email=request.getParameter("email");
 		String country=request.getParameter("country");
 		userDAO.insertUser(new User(name,email,country));
-		response.sendRedirect("defaultResponse");
+		response.sendRedirect("listOfUsers");
 		
 	}
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		userDAO.deleteUser(id);
-		response.sendRedirect("defaultResponse");
+		response.sendRedirect("listOfUsers");
 	}
 	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
 		int id = Integer.parseInt(request.getParameter("id"));
@@ -110,7 +125,7 @@ public class UserServlet extends HttpServlet {
 		String email=request.getParameter("email");
 		String country=request.getParameter("country");
 		userDAO.updateUser(new User(id,name,email,country));
-		response.sendRedirect("defaultResponse");
+		response.sendRedirect("listOfUsers");
 		
 	}
 

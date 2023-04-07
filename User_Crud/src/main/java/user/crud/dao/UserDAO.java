@@ -38,9 +38,9 @@ public class UserDAO {
 	
 	public User selectUser(int id) {
 		User user = null;
-		try {
-			Connection connection = getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(SEELCT_USER_BY_ID);
+		try(Connection connection = getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SEELCT_USER_BY_ID);) {
+			
 			preparedStatement.setInt(1, id);
 			System.out.println(preparedStatement);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -59,9 +59,9 @@ public class UserDAO {
 	}
 	public List<User> selectAllUsers() {
 		List<User> users = new ArrayList<>();
-		try {
-			Connection connection = getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(SEELCT_ALL_USERS);
+		try(Connection connection = getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SEELCT_ALL_USERS);) {
+			
 			System.out.println(preparedStatement);
 			ResultSet rs = preparedStatement.executeQuery();
 			while(rs.next()) {
