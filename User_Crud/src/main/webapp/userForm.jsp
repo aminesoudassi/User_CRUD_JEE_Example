@@ -11,6 +11,10 @@
 <body>
 	<br>
 	<div class="container col-md-5">
+		<div class="container text-left">
+			<a href="<%= request.getContextPath()%>/" class="btn btn-success">List Of Users</a>
+		</div>
+		<br>
 		<div class="card">
 			<div class="card-body">
 				<c:if test="${user!=null }">
